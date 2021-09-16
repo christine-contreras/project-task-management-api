@@ -4,11 +4,11 @@ class Application
     resp = Rack::Response.new
     req = Rack::Request.new(env)
 
-    # projects get
+    # projects get/read
     if req.path.match(/projects/) && req.get?
       return [200, { 'Content-Type' => 'application/json' }, [ {:message => "projects successfully requested", :projects => Project.all}.to_json ]]
 
-    # projects post
+    # projects post/create
     elsif req.path.match(/projects/) && req.post?
       hash = JSON.parse(req.body.read)
       project = Project.new(hash)
@@ -19,7 +19,7 @@ class Application
         return [422, { 'Content-Type' => 'application/json' }, [ {:error => "project not added"}.to_json ]]
       end #end validation of post
 
-    # projects patch
+    # projects patch/update
     elsif req.path.match(/projects/) && req.patch?
       project = Project.find_by_path(req.path)
 
@@ -45,9 +45,13 @@ class Application
         return [404, {"Content-Type" => "application/json"}, [{message: "project not found."}.to_json]]
       end #if : project exists
 
-    # tasks get
+    # boards get/read
+    elsif req.path.match(/boards/) && req.get?
+      return [200, { 'Content-Type' => 'application/json' }, [ {:message => "boards successfully requested", :boards => Board.render_all_formatted_for_frontend}.to_json ]]
+
+    # tasks get/read
     elsif req.path.match(/tasks/) && req.get?
-      return [200, { 'Content-Type' => 'application/json' }, [ {:message => "tasks successfully requested", :tasks => Task.render_all}.to_json ]]
+      return [200, { 'Content-Type' => 'application/json' }, [ {:message => "tasks successfully requested", :tasks => Task.render_all_formatted_for_frontend}.to_json ]]
     else
       resp.write "Path Not Found"
 
