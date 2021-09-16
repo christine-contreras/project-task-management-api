@@ -28,11 +28,11 @@ class Application
         if project.update(data)
           return [200, {"Content-Type" => "application/json"}, [{message: "project successfully updated", project: project}.to_json]]
         else
-          return [422, {"Content-Type" => "application/json"}, [{message: "project not updated. Invalid data."}.to_json]]
+          return [422, {"Content-Type" => "application/json"}, [{error: "project not updated. Invalid data."}.to_json]]
         end
         #if: project was updated
       else
-        return [404, {"Content-Type" => "application/json"}, [{message: "project not found."}.to_json]]
+        return [404, {"Content-Type" => "application/json"}, [{error: "project not found."}.to_json]]
       end #if : project exists
 
     # project delete
@@ -42,7 +42,7 @@ class Application
       if project && project.destroy
         return [200, {"Content-Type" => "application/json"}, [{message: "project successfully deleted", project: project}.to_json]]
       else
-        return [404, {"Content-Type" => "application/json"}, [{message: "project not found."}.to_json]]
+        return [404, {"Content-Type" => "application/json"}, [{error: "project not found."}.to_json]]
       end #if : project exists
 
     # boards get/read
@@ -76,11 +76,11 @@ class Application
         if board.update(data)
          return [200, {"Content-Type" => "application/json"}, [{message: "board successfully updated", board: board}.to_json]]
         else
-          return [422, {"Content-Type" => "application/json"}, [{message: "board not updated. Invalid data."}.to_json]]
+          return [422, {"Content-Type" => "application/json"}, [{error: "board not updated. Invalid data."}.to_json]]
         end # if: update was successful
 
       else
-        return [404, {"Content-Type" => "application/json"}, [{message: "board not found."}.to_json]]
+        return [404, {"Content-Type" => "application/json"}, [{error: "board not found."}.to_json]]
       end #if : board exists
 
     # boards delete
@@ -90,7 +90,7 @@ class Application
       if board && board.destroy
         return [200, {"Content-Type" => "application/json"}, [{message: "board successfully deleted", board: board}.to_json]]
       else
-        return [404, {"Content-Type" => "application/json"}, [{message: "board not found."}.to_json]]
+        return [404, {"Content-Type" => "application/json"}, [{error: "board not found."}.to_json]]
       end #if : board exists & destroyed
 
 
@@ -114,6 +114,23 @@ class Application
       else
         return [422, { 'Content-Type' => 'application/json' }, [ {:error => "task not added. Invalid Board Id."}.to_json ]]
       end #if: check if board  exists
+
+  # tasks patch/update
+  elsif req.path.match(/tasks/) && req.patch?
+    task = Task.find_by_path(req.path)
+
+    if task 
+      data = JSON.parse(req.body.read)
+
+      if task.update(data)
+       return [200, {"Content-Type" => "application/json"}, [{message: "task successfully updated", task: task}.to_json]]
+      else
+        return [422, {"Content-Type" => "application/json"}, [{error: "task not updated. Invalid data."}.to_json]]
+      end # if: update was successful
+
+    else
+      return [404, {"Content-Type" => "application/json"}, [{error: "task not found."}.to_json]]
+    end #if : board exists
 
     else
       resp.write "Path Not Found"

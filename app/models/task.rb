@@ -37,4 +37,9 @@ class Task < ActiveRecord::Base
         )
     end
 
+    def self.find_by_path(path)
+        task_id = path.split("/tasks/").last.to_i 
+        self.find_by_id(task_id)
+    end
+
 end
