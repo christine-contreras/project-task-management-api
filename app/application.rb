@@ -66,6 +66,22 @@ class Application
         return [422, { 'Content-Type' => 'application/json' }, [ {:error => "board not added. Invalid Project Id."}.to_json ]]
       end #if: check if project exists
       
+    # boards patch/update
+    elsif req.path.match(/boards/) && req.patch?
+      board = Board.find_by_path(req.path)
+
+      if board 
+        data = JSON.parse(req.body.read)
+
+        if board.update(data)
+         return [200, {"Content-Type" => "application/json"}, [{message: "board successfully updated", board: board}.to_json]]
+        else
+          return [422, {"Content-Type" => "application/json"}, [{message: "board not updated. Invalid data."}.to_json]]
+        end # if: update was successful
+
+      else
+        return [404, {"Content-Type" => "application/json"}, [{message: "board not found."}.to_json]]
+      end #if : board exists
 
     # tasks get/read
     elsif req.path.match(/tasks/) && req.get?
