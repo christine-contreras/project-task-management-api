@@ -83,6 +83,17 @@ class Application
         return [404, {"Content-Type" => "application/json"}, [{message: "board not found."}.to_json]]
       end #if : board exists
 
+    # boards delete
+    elsif req.path.match(/boards/) && req.delete?
+      board = Board.find_by_path(req.path)
+
+      if board && board.destroy
+        return [200, {"Content-Type" => "application/json"}, [{message: "board successfully deleted", board: board}.to_json]]
+      else
+        return [404, {"Content-Type" => "application/json"}, [{message: "board not found."}.to_json]]
+      end #if : board exists & destroyed
+
+
     # tasks get/read
     elsif req.path.match(/tasks/) && req.get?
       return [200, { 'Content-Type' => 'application/json' }, [ {:message => "tasks successfully requested", :tasks => Task.render_all_formatted_for_frontend}.to_json ]]
