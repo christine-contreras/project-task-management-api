@@ -97,6 +97,24 @@ class Application
     # tasks get/read
     elsif req.path.match(/tasks/) && req.get?
       return [200, { 'Content-Type' => 'application/json' }, [ {:message => "tasks successfully requested", :tasks => Task.render_all_formatted_for_frontend}.to_json ]]
+
+    # tasks post/create
+    elsif req.path.match(/tasks/) && req.post?
+      hash = JSON.parse(req.body.read)
+      board = Board.find_by_id(hash["board_id"])
+
+      if board 
+        task = Task.create_new_task_with_defaults(hash)
+
+        if task.save
+          return [200, { 'Content-Type' => 'application/json' }, [ {:message => "task successfully created", :task => task}.to_json ]]
+        else
+          return [422, { 'Content-Type' => 'application/json' }, [ {:error => "task not added. Invalid Data"}.to_json ]]
+        end #end validation of post
+      else
+        return [422, { 'Content-Type' => 'application/json' }, [ {:error => "task not added. Invalid Board Id."}.to_json ]]
+      end #if: check if board  exists
+
     else
       resp.write "Path Not Found"
 
