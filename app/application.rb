@@ -49,6 +49,24 @@ class Application
     elsif req.path.match(/boards/) && req.get?
       return [200, { 'Content-Type' => 'application/json' }, [ {:message => "boards successfully requested", :boards => Board.render_all_formatted_for_frontend}.to_json ]]
 
+
+    # boards post/create
+    elsif req.path.match(/boards/) && req.post?
+      hash = JSON.parse(req.body.read)
+      project = Project.find_by_id(hash["project_id"])
+
+      if project 
+        board = Board.new(name: hash["name"], project_id: hash["project_id"])
+        if board.save
+          return [200, { 'Content-Type' => 'application/json' }, [ {:message => "board successfully created", :board => board}.to_json ]]
+        else
+          return [422, { 'Content-Type' => 'application/json' }, [ {:error => "board not added. Invalid Data"}.to_json ]]
+        end #end validation of post
+      else
+        return [422, { 'Content-Type' => 'application/json' }, [ {:error => "board not added. Invalid Project Id."}.to_json ]]
+      end #if: check if project exists
+      
+
     # tasks get/read
     elsif req.path.match(/tasks/) && req.get?
       return [200, { 'Content-Type' => 'application/json' }, [ {:message => "tasks successfully requested", :tasks => Task.render_all_formatted_for_frontend}.to_json ]]
