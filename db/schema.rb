@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_15_155459) do
+ActiveRecord::Schema.define(version: 2021_09_18_164307) do
 
   create_table "boards", force: :cascade do |t|
     t.string "name"
@@ -24,6 +24,7 @@ ActiveRecord::Schema.define(version: 2021_09_15_155459) do
     t.string "title"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "favorite"
   end
 
   create_table "tasks", force: :cascade do |t|
@@ -32,7 +33,7 @@ ActiveRecord::Schema.define(version: 2021_09_15_155459) do
     t.text "description"
     t.string "status"
     t.string "priority"
-    t.boolean "archived"
+    t.boolean "completed"
     t.integer "board_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

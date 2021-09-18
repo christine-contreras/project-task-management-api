@@ -5,15 +5,18 @@ Project.destroy_all
 
 puts "Seeding projects..."
 creative = Project.create(
-    title: 'Creative'
+    title: 'Creative',
+    favorite: false
 )
 
 web = Project.create(
-    title: 'Web'
+    title: 'Web',
+    favorite: true
 )
 
 email = Project.create(
-    title: 'Email'
+    title: 'Email',
+    favorite: false
 )
 
 puts "Seeding boards..."
@@ -35,17 +38,50 @@ creative_backlog.tasks.build(
     description: 'Send over homepage for approval',
     status: 'Not Started',
     priority: 'High',
-    archived: false
+    completed: false
 )
+creative_backlog.tasks.create_new_task_with_defaults(
+    {
+    name: 'Wk 37 Homepage',
+    due_date: Date.new(2021,9,21),
+    description: 'Send over homepage for approval',
+    status: 'Not Started',
+    priority: 'High',
+    completed: false
+    })
+
 creative_backlog.save
 
-web_done.tasks.build(
+# another way to get a random id
+Task.create(
+    name: "Talk to marketing",
+    due_date: Date.new(2021,9,22),
+    status: 'Not Started',
+    priority: 'Medium',
+    board_id: Board.all.sample.id,
+    completed: false
+)
+
+# another way to create
+Task.create(
+    name: "Talk to marchandising",
+    due_date: Date.new(2021,9,22),
+    status: 'Not Started',
+    priority: 'Medium',
+    board_id: web_todo.id,
+    completed: false
+)
+
+
+web_done.tasks.create_new_task_with_defaults(
+    {
     name: 'Wk 37 Banners',
     due_date: Date.new(2021,9,14),
     description: 'banners for promo need to go on the homepage and checkout',
     status: 'Approved',
     priority: 'Medium',
-    archived: false
+    completed: false
+    }
 )
 web_done.save
 

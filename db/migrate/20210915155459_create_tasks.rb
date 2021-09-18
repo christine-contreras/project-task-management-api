@@ -6,7 +6,7 @@ class CreateTasks < ActiveRecord::Migration[5.2]
       t.text :description
       t.string :status
       t.string :priority
-      t.boolean :archived
+      t.boolean :completed
       t.belongs_to :board
       t.timestamps
     end

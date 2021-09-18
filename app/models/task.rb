@@ -1,4 +1,8 @@
+require_relative './models_module'
+
 class Task < ActiveRecord::Base
+    extend InheritMethods::ClassMethods #extend is for class methods
+
     belongs_to :board
     has_one :project, through: :board
 
@@ -11,7 +15,7 @@ class Task < ActiveRecord::Base
             description: task.description,
             status: task.status,
             priority: task.priority,
-            archived: task.archived,
+            completed: task.completed,
             board: task.board.name,
             board_id: task.board_id,
             project: task.board.project.title,
@@ -32,14 +36,14 @@ class Task < ActiveRecord::Base
             description: hash["description"],
             status: status,
             priority: priority,
-            archived: false,
+            completed: false,
             board_id: hash["board_id"]
         )
     end
 
-    def self.find_by_path(path)
-        task_id = path.split("/tasks/").last.to_i 
-        self.find_by_id(task_id)
-    end
+    # def self.find_by_path(path)
+    #     task_id = path.split("/tasks/").last.to_i 
+    #     self.find_by_id(task_id)
+    # end
 
 end

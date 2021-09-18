@@ -1,4 +1,8 @@
+require_relative './models_module'
+
 class Board < ActiveRecord::Base
+    extend InheritMethods::ClassMethods #extend is for class methods
+    
     belongs_to :project 
     has_many :tasks, dependent: :destroy
 
@@ -16,9 +20,9 @@ class Board < ActiveRecord::Base
     end
 
 
-    def self.find_by_path(path)
-        board_id = path.split("/boards/").last.to_i 
-        self.find_by_id(board_id)
-    end
+    # def self.find_by_path(path)
+    #     board_id = path.split("/boards/").last.to_i 
+    #     self.find_by_id(board_id)
+    # end
 
 end

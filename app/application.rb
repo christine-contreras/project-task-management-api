@@ -4,14 +4,15 @@ class Application
     resp = Rack::Response.new
     req = Rack::Request.new(env)
 
-    # projects get/read
+    # projects get/read (tested)
     if req.path.match(/projects/) && req.get?
-      return [200, { 'Content-Type' => 'application/json' }, [ {:message => "projects successfully requested", :projects => Project.all}.to_json ]]
+      # return [200, { 'Content-Type' => 'application/json' }, [ {:message => "projects successfully requested", :projects => Project.all}.to_json(:include => { :boards => {:include => :tasks}}) ]]
+      return [200, { 'Content-Type' => 'application/json' }, [ {:message => "projects successfully requested", :projects => Project.all}.to_json(:include => :tasks) ]]
 
-    # projects post/create
+    # projects post/create (tested)
     elsif req.path.match(/projects/) && req.post?
       hash = JSON.parse(req.body.read)
-      project = Project.new(hash)
+      project = Project.create_new_project_with_defaults(hash)
 
       if project.save
         return [200, { 'Content-Type' => 'application/json' }, [ {:message => "project successfully created", :project => project}.to_json ]]
@@ -19,9 +20,9 @@ class Application
         return [422, { 'Content-Type' => 'application/json' }, [ {:error => "project not added"}.to_json ]]
       end #end validation of post
 
-    # projects patch/update
+    # projects patch/update (tested)
     elsif req.path.match(/projects/) && req.patch?
-      project = Project.find_by_path(req.path)
+      project = Project.find_by_path(req.path, "/projects/")
 
       if project
         data = JSON.parse(req.body.read)
@@ -37,7 +38,7 @@ class Application
 
     # project delete
     elsif req.path.match(/projects/) && req.delete?
-      project = Project.find_by_path(req.path)
+      project = Project.find_by_path(req.path, "/projects/")
 
       if project && project.destroy
         return [200, {"Content-Type" => "application/json"}, [{message: "project successfully deleted", project: project}.to_json]]
@@ -45,12 +46,12 @@ class Application
         return [404, {"Content-Type" => "application/json"}, [{error: "project not found."}.to_json]]
       end #if : project exists
 
-    # boards get/read
+    # boards get/read (tested)
     elsif req.path.match(/boards/) && req.get?
       return [200, { 'Content-Type' => 'application/json' }, [ {:message => "boards successfully requested", :boards => Board.render_all_formatted_for_frontend}.to_json ]]
 
 
-    # boards post/create
+    # boards post/create (tested)
     elsif req.path.match(/boards/) && req.post?
       hash = JSON.parse(req.body.read)
       project = Project.find_by_id(hash["project_id"])
@@ -66,9 +67,9 @@ class Application
         return [422, { 'Content-Type' => 'application/json' }, [ {:error => "board not added. Invalid Project Id."}.to_json ]]
       end #if: check if project exists
       
-    # boards patch/update
+    # boards patch/update (tested)
     elsif req.path.match(/boards/) && req.patch?
-      board = Board.find_by_path(req.path)
+      board = Board.find_by_path(req.path, "/boards/")
 
       if board 
         data = JSON.parse(req.body.read)
@@ -83,9 +84,9 @@ class Application
         return [404, {"Content-Type" => "application/json"}, [{error: "board not found."}.to_json]]
       end #if : board exists
 
-    # boards delete
+    # boards delete (tested)
     elsif req.path.match(/boards/) && req.delete?
-      board = Board.find_by_path(req.path)
+      board = Board.find_by_path(req.path, "/boards/")
 
       if board && board.destroy
         return [200, {"Content-Type" => "application/json"}, [{message: "board successfully deleted", board: board}.to_json]]
@@ -94,11 +95,11 @@ class Application
       end #if : board exists & destroyed
 
 
-    # tasks get/read
+    # tasks get/read (tested)
     elsif req.path.match(/tasks/) && req.get?
       return [200, { 'Content-Type' => 'application/json' }, [ {:message => "tasks successfully requested", :tasks => Task.render_all_formatted_for_frontend}.to_json ]]
 
-    # tasks post/create
+    # tasks post/create (tested)
     elsif req.path.match(/tasks/) && req.post?
       hash = JSON.parse(req.body.read)
       board = Board.find_by_id(hash["board_id"])
@@ -115,9 +116,9 @@ class Application
         return [422, { 'Content-Type' => 'application/json' }, [ {:error => "task not added. Invalid Board Id."}.to_json ]]
       end #if: check if board  exists
 
-     # tasks patch/update
+     # tasks patch/update (tested)
     elsif req.path.match(/tasks/) && req.patch?
-      task = Task.find_by_path(req.path)
+      task = Task.find_by_path(req.path, "/tasks/")
 
       if task 
         data = JSON.parse(req.body.read)
@@ -132,9 +133,9 @@ class Application
         return [404, {"Content-Type" => "application/json"}, [{error: "task not found."}.to_json]]
       end #if : task exists
 
-    # tasks delete
+    # tasks delete (tested)
     elsif req.path.match(/tasks/) && req.delete?
-      task = Task.find_by_path(req.path)
+      task = Task.find_by_path(req.path, "/tasks/")
 
       if task && task.destroy
         return [200, {"Content-Type" => "application/json"}, [{message: "task successfully deleted", task: task}.to_json]]
@@ -154,19 +155,23 @@ class Application
 
 end
 
-# GET /tasks - get all tasks associated with board
-# PUT /tasks - create new task within board
-# PATCH /tasks/:id - update task
-# DELETE /tasks/:id - delete task
+# GET /projects - get all project
+# PUT /projects - create new project
+# PATCH /project/:id - update project name
+# DELETE /project/:id - delete project (maybe also delete all boards and tasks associated)
 
 # GET /boards - get all boards associated to project
 # PUT /boards - create new board within project
 # PATCH /boards/:id - update board name
 # DELETE /boards/:id - delete board (maybe also delete all tasks associated)
 
+# GET /tasks - get all tasks associated with board
+# PUT /tasks - create new task within board
+# PATCH /tasks/:id - update task
+# DELETE /tasks/:id - delete task
 
-# GET /projects - get all project
-# PUT /projects - create new project
-# PATCH /project/:id - update project name
-# DELETE /project/:id - delete project (maybe also delete all boards and tasks associated)
+
+
+
+
 
