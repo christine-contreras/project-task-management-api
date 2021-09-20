@@ -6,8 +6,14 @@ class Application
 
     # projects get/read (tested)
     if req.path.match(/projects/) && req.get?
-      # return [200, { 'Content-Type' => 'application/json' }, [ {:message => "projects successfully requested", :projects => Project.all}.to_json(:include => { :boards => {:include => :tasks}}) ]]
-      return [200, { 'Content-Type' => 'application/json' }, [ {:message => "projects successfully requested", :projects => Project.all}.to_json(:include => :tasks) ]]
+      if req.path.split("/projects/").length === 1
+        return [200, { 'Content-Type' => 'application/json' }, [ {:message => "projects successfully requested", :projects => Project.all}.to_json(:include => :tasks) ]]
+      else 
+        project = Project.find_by_path(req.path, "/projects/")
+        return [200, { 'Content-Type' => 'application/json' }, [ {:message => "project successfully requested", :project => project}.to_json(:include => { :boards => {:include => :tasks}}) ]]
+      end #check if all projects or specific project
+      
+
 
     # projects post/create (tested)
     elsif req.path.match(/projects/) && req.post?

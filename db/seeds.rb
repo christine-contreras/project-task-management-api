@@ -6,17 +6,20 @@ Project.destroy_all
 puts "Seeding projects..."
 creative = Project.create(
     title: 'Creative',
-    favorite: false
+    favorite: false,
+    color: '#e1bee7'
 )
 
 web = Project.create(
     title: 'Web',
-    favorite: true
+    favorite: true,
+    color: '#e1bee7'
 )
 
 email = Project.create(
     title: 'Email',
-    favorite: false
+    favorite: false,
+    color: '#e1bee7'
 )
 
 puts "Seeding boards..."
@@ -38,8 +41,10 @@ creative_backlog.tasks.build(
     description: 'Send over homepage for approval',
     status: 'Not Started',
     priority: 'High',
-    completed: false
+    completed: true
 )
+
+
 creative_backlog.tasks.create_new_task_with_defaults(
     {
     name: 'Wk 37 Homepage',
@@ -49,6 +54,18 @@ creative_backlog.tasks.create_new_task_with_defaults(
     priority: 'High',
     completed: false
     })
+
+
+
+    creative_backlog.tasks.create_new_task_with_defaults(
+        {
+        name: 'Wk 37 Homepage Test',
+        due_date: Date.new(2021,9,21),
+        description: 'Send over homepage for approval',
+        status: 'Not Started',
+        priority: 'High',
+        completed: true
+        })
 
 creative_backlog.save
 
