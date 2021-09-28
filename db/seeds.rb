@@ -1,106 +1,189 @@
 puts "Clearing old data..."
 Task.destroy_all
 Board.destroy_all
+UserProject.destroy_all
 Project.destroy_all
+User.destroy_all
+
+puts "Seeding users..."
+christine = User.create(
+    first_name: 'Christine',
+    last_name: 'Contreras',
+    email: 'christineec23@yahoo.com',
+    password: 'password',
+    logged_in: false
+)
+
+test = User.create(
+    first_name: 'Test',
+    last_name: 'Name',
+    email: 'test@yahoo.com',
+    password: 'testing',
+    logged_in: false
+)
 
 puts "Seeding projects..."
-creative = Project.create(
-    title: 'Creative',
+drapers = Project.create(
+    title: 'Drapers',
     favorite: false,
     color: '#e1bee7'
 )
 
-web = Project.create(
-    title: 'Web',
+haband = Project.create(
+    title: 'Haband',
     favorite: true,
     color: '#e1bee7'
 )
 
-email = Project.create(
-    title: 'Email',
+apple = Project.create(
+    title: 'Appleseeds',
     favorite: false,
     color: '#e1bee7'
 )
 
+blair = Project.create(
+    title: 'Blair',
+    favorite: false,
+    color: '#e1bee7'
+)
+
+puts "Seeding join table for users and projects..."
+UserProject.create(user_id: christine.id, project_id: drapers.id)
+UserProject.create(user_id: christine.id, project_id: haband.id)
+UserProject.create(user_id: christine.id, project_id: apple.id)
+UserProject.create(user_id: christine.id, project_id: blair.id)
+
+
 puts "Seeding boards..."
-creative_backlog = creative.boards.build(name: 'Backlog')
-creative_todo = creative.boards.build(name: 'To Do')
-creative_done = creative.boards.build(name: 'Done')
-creative.save
+drapers_backlog = drapers.boards.build(name: 'Backlog')
+drapers_todo = drapers.boards.build(name: 'To Do')
+drapers_completed = drapers.boards.build(name: 'Completed')
+drapers.save
 
 
-web_backlog = web.boards.build(name: 'Backlog')
-web_todo = web.boards.build(name: 'To Do')
-web_done = web.boards.build(name: 'Done')
-web.save
+apple_backlog = apple.boards.build(name: 'Backlog')
+apple_todo = apple.boards.build(name: 'To Do')
+apple_completed = apple.boards.build(name: 'Completed')
+apple.save
+
+blair_backlog = blair.boards.build(name: 'Backlog')
+blair_todo = blair.boards.build(name: 'To Do')
+blair_completed = blair.boards.build(name: 'Completed')
+blair.save
+
 
 puts "Seeding tasks..."
-creative_backlog.tasks.build(
-    name: 'Wk 37 Homepage',
-    due_date: Date.new(2021,9,21),
-    description: 'Send over homepage for approval',
+blair_todo.tasks.build(
+    name: 'Homepage WK40',
+    due_date: Date.new(2021,10,1),
+    description: '',
     status: 'Not Started',
+    priority: 'Medium',
+    completed: false
+)
+
+blair_todo.tasks.build(
+    name: 'Flyout Images',
+    due_date: Date.new(2021,10,1),
+    description: '',
+    status: 'Not Started',
+    priority: 'Low',
+    completed: false
+)
+
+
+blair_todo.tasks.build(
+    name: 'Banner - B3JBQ - Free Shipping on 59',
+    due_date: Date.new(2021,10,1),
+    description: 'Global Banner - B3JBQ - Free Shipping on 59\nGlobal Disclaimer -  B3JBQ - Free Shipping on 59\nCheckout Banner - B3JBQ - Free Shipping on 59',
+    status: 'Not Started',
+    priority: 'High',
+    completed: false
+)
+
+blair_todo.save
+
+
+blair_completed.tasks.build(
+    name: 'Homepage Clickmap Changes',
+    due_date: Date.new(2021,9,29),
+    description: '',
+    status: 'Complete',
+    priority: 'Medium',
+    completed: true
+)
+
+blair_completed.save
+
+
+
+apple_todo.tasks.build(
+    name: 'Homepage Fall 3 WK40',
+    due_date: Date.new(2021,10,1),
+    description: '',
+    status: 'Not Started',
+    priority: 'High',
+    completed: false
+)
+
+apple_todo.tasks.build(
+    name: 'Banner - A21M3 - Up To 25 Off Sweaters Pants FSH 79',
+    due_date: Date.new(2021,10,4),
+    description: 'Global Banner - A21M3 - Up To 25 Off Sweaters Pants FSH 79\nGlobal Disclaimer - A21M3 - Up To 25 Off Sweaters Pants FSH 79\nClothing - Flyout Offer - A21M3 - Up To 25 Off Sweaters Pants FSH 79\nTops - Flyout Offer - A21M3 - Up To 25 Off Sweaters Pants FSH 79\nCoupons - A21M3 - Up To 25 Off Sweaters Pants FSH 79\nDaily Offers - A21M3 - Up To 25 Off Sweaters Pants FSH 79\nHomePage - Banner - A21M3 - Up To 25 Off Sweaters Pants FSH 79',
+    status: 'Not Started',
+    priority: 'Medium',
+    completed: false
+)
+
+apple_todo.tasks.build(
+    name: 'Banner - APPLE - 30 Off FSH 79',
+    due_date: Date.new(2021,10,7),
+    description: 'Global Banner - APPLE - 30 Off FSH 79\nGlobal Disclaimer - APPLE - 30 Off FSH 79\nClothing - Flyout Offer - APPLE - 30 Off FSH 79\nTops - Flyout Offer - APPLE - 30 Off FSH 79\nCoupons - APPLE - 30 Off FSH 79\nDaily Offers - APPLE - 30 Off FSH 79\nHomePage - Banner - APPLE - 30 Off FSH 79',
+    status: 'Not Started',
+    priority: 'High',
+    completed: false
+)
+
+apple_todo.save
+
+
+drapers_todo.tasks.build(
+    name: 'Banner - Banner - DD994 - 25 Dollars Off 100 FSH 100',
+    due_date: Date.new(2021,9,29),
+    description: 'promo code only\nBanner - Banner - DD994 - 25 Dollars Off 100 FSH 100\nGlobal Disclaimer - Banner - DD994 - 25 Dollars Off 100 FSH 100\nHomepage - Banner - DD994 - 25 Dollars Off 100 FSH 100',
+    status: 'Complete',
     priority: 'High',
     completed: true
 )
 
-
-creative_backlog.tasks.create_new_task_with_defaults(
-    {
-    name: 'Wk 37 Homepage',
-    due_date: Date.new(2021,9,21),
-    description: 'Send over homepage for approval',
-    status: 'Not Started',
+drapers_todo.tasks.build(
+    name: 'Banner - DND139 - 25 Off 100 FSH 100',
+    due_date: Date.new(2021,9,29),
+    description: 'promo code only\nGlobal Banner - Banner - DND139 - 25 Off 100 FSH 100\nGlobal Disclaimer - Banner - DND139 - 25 Off 100 FSH 100\nHomepage - Banner - DND139 - 25 Off 100 FSH 100',
+    status: 'In Progress',
     priority: 'High',
     completed: false
-    })
+)
 
+drapers_todo.tasks.build(
+    name: 'Promo Code TEST',
+    due_date: Date.new(2021,9,30),
+    description: 'Global Banner - Banner - TEST - In Monetate\nGlobal Disclaimer - Banner - DND142 - 25 Dollars Off 100 FSH 100\nGlobal Disclaimer - Banner - DND141 - 25 Off 100 FSH 100\nGlobal Banner - Banner - TEST - In Monetate',
+    status: 'In Progress',
+    priority: 'High',
+    completed: false
+)
 
-
-    creative_backlog.tasks.create_new_task_with_defaults(
-        {
-        name: 'Wk 37 Homepage Test',
-        due_date: Date.new(2021,9,21),
-        description: 'Send over homepage for approval',
-        status: 'Not Started',
-        priority: 'High',
-        completed: true
-        })
-
-creative_backlog.save
-
-# another way to get a random id
-Task.create(
-    name: "Talk to marketing",
-    due_date: Date.new(2021,9,22),
+drapers_todo.tasks.build(
+    name: 'Workspace for Test',
+    due_date: Date.new(2021,9,30),
+    description: '',
     status: 'Not Started',
-    priority: 'Medium',
-    board_id: Board.all.sample.id,
+    priority: 'Low',
     completed: false
 )
 
-# another way to create
-Task.create(
-    name: "Talk to marchandising",
-    due_date: Date.new(2021,9,22),
-    status: 'Not Started',
-    priority: 'Medium',
-    board_id: web_todo.id,
-    completed: false
-)
-
-
-web_done.tasks.create_new_task_with_defaults(
-    {
-    name: 'Wk 37 Banners',
-    due_date: Date.new(2021,9,14),
-    description: 'banners for promo need to go on the homepage and checkout',
-    status: 'Approved',
-    priority: 'Medium',
-    completed: false
-    }
-)
-web_done.save
+drapers_todo.save
 
 
 puts "Done Seeding!"

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_19_215741) do
+ActiveRecord::Schema.define(version: 2021_09_28_223840) do
 
   create_table "boards", force: :cascade do |t|
     t.string "name"
@@ -39,6 +39,25 @@ ActiveRecord::Schema.define(version: 2021_09_19_215741) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["board_id"], name: "index_tasks_on_board_id"
+  end
+
+  create_table "user_projects", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "project_id"
+    t.integer "user_id"
+    t.index ["project_id"], name: "index_user_projects_on_project_id"
+    t.index ["user_id"], name: "index_user_projects_on_user_id"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "first_name"
+    t.string "last_name"
+    t.string "email"
+    t.string "password"
+    t.boolean "logged_in"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end
