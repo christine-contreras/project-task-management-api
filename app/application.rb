@@ -5,7 +5,7 @@ class Application
     req = Rack::Request.new(env)
 
     # projects get/read (tested)
-    if req.path.match(/projects/) && req.get?
+  if req.path.match(/projects/) && req.get?
       if req.path.split("/projects/").length === 1
         return [200, { 'Content-Type' => 'application/json' }, [ {:message => "projects successfully requested", :projects => Project.all}.to_json(:include => :tasks) ]]
       else 

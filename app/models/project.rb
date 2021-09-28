@@ -2,8 +2,6 @@ require_relative './models_module'
 
 class Project < ActiveRecord::Base
     extend InheritMethods::ClassMethods #extend is for class methods
-    has_many :user_projects
-    has_many :users, through: :user_projects
     has_many :boards, dependent: :destroy
     has_many :tasks, through: :boards
 

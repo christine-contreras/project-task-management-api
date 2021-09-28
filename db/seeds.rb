@@ -1,26 +1,8 @@
 puts "Clearing old data..."
 Task.destroy_all
 Board.destroy_all
-UserProject.destroy_all
+
 Project.destroy_all
-User.destroy_all
-
-puts "Seeding users..."
-christine = User.create(
-    first_name: 'Christine',
-    last_name: 'Contreras',
-    email: 'christineec23@yahoo.com',
-    password: 'password',
-    logged_in: false
-)
-
-test = User.create(
-    first_name: 'Test',
-    last_name: 'Name',
-    email: 'test@yahoo.com',
-    password: 'testing',
-    logged_in: false
-)
 
 puts "Seeding projects..."
 drapers = Project.create(
@@ -46,12 +28,6 @@ blair = Project.create(
     favorite: false,
     color: '#e1bee7'
 )
-
-puts "Seeding join table for users and projects..."
-UserProject.create(user_id: christine.id, project_id: drapers.id)
-UserProject.create(user_id: christine.id, project_id: haband.id)
-UserProject.create(user_id: christine.id, project_id: apple.id)
-UserProject.create(user_id: christine.id, project_id: blair.id)
 
 
 puts "Seeding boards..."
