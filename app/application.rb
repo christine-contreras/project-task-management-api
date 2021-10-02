@@ -21,7 +21,7 @@ class Application
       project = Project.create_new_project_with_defaults(hash)
 
       if project.save
-        return [200, { 'Content-Type' => 'application/json' }, [ {:message => "project successfully created", :project => project}.to_json ]]
+        return [200, { 'Content-Type' => 'application/json' }, [ {:message => "project successfully created", :project => project}.to_json(:include => :tasks) ]]
       else
         return [422, { 'Content-Type' => 'application/json' }, [ {:error => "project not added"}.to_json ]]
       end #end validation of post
