@@ -17,11 +17,4 @@ class Project < ActiveRecord::Base
         )
     end
 
-
-    # # def self.find_by_path(path)
-    #     project_id = path.split("/projects/").last.to_i 
-    # #     self.find_by_id(project_id)
-
-    # # end
-
 end
