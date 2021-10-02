@@ -65,14 +65,14 @@ You can make all CRUD calls for the projects database.
 
 Shows you projects and all of the tasks associated with the project
 
-```sh
+```js
 
 fetch('http://localhost:9393/projects')
       .then((res) => res.json())
       .then((data) => data.projects)
 
 
-# output
+// output
 {
 message: "projects successfully requested",
 projects: [
@@ -141,13 +141,13 @@ updated_at: "2021-09-28T23:50:45.680Z"
 
 Shows you all boards and tasks associated with the project
 
-```sh
+```js
 fetch('http://localhost:9393/projects/1')
       .then((res) => res.json())
       .then((data) => data.projects)
 
 
-# output
+// output
 {
 message: "project successfully requested",
 project: {
@@ -247,7 +247,7 @@ You can make all CRUD calls for the projects database.
 
 ### Example: Create a Board
 
-```sh
+```js
 fetch('http://localhost:9393/boards/', {
       method: 'POST',
       headers: {
@@ -260,7 +260,7 @@ fetch('http://localhost:9393/boards/', {
       }),
     })
 
-# output
+// output
 {
     "message": "board successfully created",
     "board": {
@@ -284,12 +284,12 @@ You can make all CRUD calls for the projects database.
 
 ### Example: Delete a Task
 
-```sh
+```js
 fetch(`http://localhost:9393/tasks/11`, {
       method: 'DELETE',
     })
 
-# output
+// output
 {
     "message": "task successfully deleted",
     "task": {
