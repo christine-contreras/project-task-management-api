@@ -8,7 +8,7 @@ class Project < ActiveRecord::Base
 
     def self.create_new_project_with_defaults(hash)
         title = hash["title"] ? hash["title"] : "New Project"
-        favorite = hash["favorite"] ? hash["title"] : false
+        favorite = hash["favorite"] ? hash["favorite"] : false
         color = hash["color"] ? hash["color"] : '#e1bee7'
         self.new(
             title: title,
